@@ -1,4 +1,5 @@
-# zem-pro-app
+# zems-pro-test
+Тестовое для Zems.pro
 <p align="center">
 Порядок установки 
 </p>
@@ -9,6 +10,10 @@ composer i
 npm i  
 </p>
 <p align="left">
+php artisan serve
+<p align="left">
+npm run dev
+<p align="left">
 php artisan migrate 
 </p>
 <p align="left">
@@ -17,5 +22,7 @@ php artisan db:seed
 <p align="left">
 php artisan storage:link
 </p>
+
+
 
 
