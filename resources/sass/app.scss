@@ -1,0 +1,30 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+
+.dark-bg{
+background-color: #282828 !important;	
+}
+
+	._zems{
+		color:#fff;
+	}
+	._pro{
+		color:#ffc700;
+	}
+    
+    ._bottom_brand{
+		font-size: 12px;
+		color:#ffc700;
+		margin-bottom: 0;
+	}
+	
+	.nav-link{
+	color:#ffc700 !important;	
+	}
