@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\TimeSpentRequest;
 use App\Models\TimeSpent;
+use Carbon\Carbon;
 
 class TimeSpentController extends Controller
 {
@@ -30,9 +31,16 @@ class TimeSpentController extends Controller
      */
     public function store(TimeSpentRequest $request)
     {
+        if($request->type == 'mark' && $request->stop == NULL){
+            $request->start = Carbon::now();
+        }
+        
         $data = [
             'description' => $request->get('description'),
-            'time_spent'  => $request->get('time_spent'),
+            'time_spent'  => $request->time_spent,
+            'type'        => $request->get('type'),
+            'start'       => $request->start,
+            'stop'        => $request->get('stop'),
             'user_id'     => Auth::id(),
             'task_id'     => $request->get('task_id'),
         ];
@@ -42,7 +50,13 @@ class TimeSpentController extends Controller
         
         return response()->json($data);
     }
-
+     
+    public function stop(string $id){
+        $timeSpent = TimeSpent::whereId($id)->first();
+        $timeSpent->stop = Carbon::now();
+        $timeSpent->time_spent = Carbon::parse($timeSpent->start)->diff(Carbon::now())->format('%h:%i:%s');
+        $timeSpent->save();
+    }
     /**
      * Display the specified resource.
      */

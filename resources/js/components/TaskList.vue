@@ -43,8 +43,13 @@
     <tr v-for="ts in task.time_spent" :key="ts.id">
       <th scope="row"></th>
       <td>{{ts.description}}</td>
-      <td>{{ts.time_spent}}</td>
       <td>
+      {{ts.time_spent}}
+      </td>
+      <td class="text-end">
+      <svg v-if="ts.type == 'mark' && ts.stop  == null" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"   @click="stopTimeSpent(ts.id, ts);removeItem(this)" class="bi bi-stop-btn-fill" title="завершить" viewBox="0 0 16 16">
+        <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2m6.5-7A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5z"/>
+     </svg>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" @click="editTimeSpent(ts.id, ts)" viewBox="0 0 16 16">
 	  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
 	</svg>
@@ -178,11 +183,18 @@ export default {
 	             case 'deleteTimeSpent':
 	             this.isOpenedDelTs = true;
 	             break;
+	             case 'markTime':
+	             this.editableTs ={mark:true}
+	             this.isOpenedAddTimeSpent = true;
+	             break;
 	             
 	             }
             },
             getImgUrl() {
 			  return'/storage/'+ this.project.image.image_path ;
+			},
+			removeItem(e){
+			console.log(e.target);
 			},
 			async load(){
 	                await axios.get(`/vue_project/${this.project_id}`).then(({data})=>{
@@ -233,13 +245,46 @@ export default {
             addTimeSpent(taskId){
 	            this.editableTaskID = taskId;
 	            this.editableTs={};
+	            this.tsModalMode = 'create';
 	            this.showModal('addTimeSpent');
+            },
+           markTime(taskId){
+	            this.editableTaskID = taskId;
+	            this.editableTs={};
+	            this.tsModalMode = 'create';
+	            this.showModal('markTime');
             },
             editTimeSpent(id, ts){
 	            this.editableTsID = id;
 	            this.editableTs = ts;
 	            this.tsModalMode = 'edit';
 	            this.showModal('addTimeSpent');
+            },
+            stopTimeSpent(id, ts){
+
+                    const config = {
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRF-TOKEN': this.csrf,
+                            }
+                          }
+                
+                let data = new FormData();                
+                let appObj = this ;
+
+                 var url = '/time_spent/stop/'+id;
+                  data.append('_method','post');
+
+                axios.post(url, data, config)
+                    .then(function (result) {
+                    
+                     appObj.load();
+
+                    })
+                    .catch(function (err) {
+                    console.log(err);
+
+                    })
             },
             deleteTimeSpent(id, ts){
 	            this.editableTsID = id;

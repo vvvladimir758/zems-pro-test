@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
+use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,15 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('tasks.index');
+        
+        $projects =  Project::where('user_id', Auth::id())
+        ->with('image')
+        ->with('tasks.timeSpent')
+        ->get()
+        ->toJson();
+
+        return view('tasks.index')
+        ->with('projects',$projects);
     }
 
     /**

@@ -7,8 +7,10 @@
   
  <div class="container mt-5">
 <div class="row">
+<template v-for="project in projects_" :key="project.id">
 
- <template v-for="task in tasks_" :key="task.id">
+<b>{{project.title}}</b>
+ <template v-for="task in project.tasks" :key="task.id">
  
 <nav class="navbar bg-body-tertiary mt-5">
   <div class="container-fluid">
@@ -60,7 +62,8 @@
 <button class="btn btn-success add-time-btn" @click="addTimeSpent(task.id)">Добавить время</button>
 </div>
  </template>
-
+ 
+</template>
   
 </div>
 </div>
@@ -128,11 +131,11 @@ import AddTimeSpent from "../components/AddTimeSpent.vue";
 export default {
   name: "TaskListSingle",
   components:{ },
-    props:['project_id','tasks'],
+    props:['projects'],
   created() {},
   mounted() {
-  this.tasks_ = this.$props.tasks;
-  this.project_id = this.$props.project_id;
+  console.log(this.$props.projects);
+  this.projects_ = this.$props.projects;
   },
   data() {
     return {
@@ -140,7 +143,7 @@ export default {
     isOpenedAddTimeSpent:false,
     isOpenedDelTask:false,
     isOpenedDelTs:false,
-    tasks_: {},
+    projects_: {},
     editableTask:{},
     editableTaskID:null,
     editableTs:{},
@@ -184,9 +187,9 @@ export default {
 			  return'/storage/'+ this.project.image.image_path ;
 			},
 			async load(){
-	                await axios.get(`/vue_project/${this.project_id}`).then(({data})=>{
-	                    this.tasks_ = data.tasks;
-	                    this.project = data;
+	                await axios.get(`/vue_projects_data/`).then(({data})=>{
+	                    this.projects_ = data;
+	                    console.log(this.projects_.tasks);
 	                    this.isLoaded = true;
 	                }).catch(({ response })=>{
 	                    console.error(response)

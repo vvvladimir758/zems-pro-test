@@ -6,14 +6,14 @@
 @endpush
 @push('scripts')
 
-  @vite('resources/js/task/list.js')
+  @vite('resources/js/task/task.js')
 
 @endpush
 
 @section('content')
-<div id="taskList">
+<div id="task">
 
-<task-list :projects="{{$projects}}" ref="task_list"></task-list>
+<task :data="{{$data}}" ref="task"></task-list>
  
         <vue-sidepanel 
             v-model="isOpened"

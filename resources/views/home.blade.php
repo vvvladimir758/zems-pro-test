@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Приветсвуем') }}</div>
-
+   
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -15,9 +15,11 @@
                     @endif
 
                     {{ __('Вы вошли в систему , в панели меню осуществляется навигация по сервису') }}
+                    
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

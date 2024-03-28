@@ -17,12 +17,19 @@ class ProjectVueController extends Controller
     }
     
     public function show(Request $request){
-        
-      return  Project::where('id', $request->project)
-        ->with('image')
-        ->with('tasks.timeSpent')
-        ->first()
-        ->toJson();
-
+         return  Project::where('id', $request->project)
+            ->with('image')
+            ->with('tasks.timeSpent')
+            ->first()
+            ->toJson();
     }
+    
+    public function projects(){
+         return Project::where('user_id', Auth::id())
+            ->with('image')
+            ->with('tasks.timeSpent')
+            ->get()
+            ->toJson();
+    }
+    
 }

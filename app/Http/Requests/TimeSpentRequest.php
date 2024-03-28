@@ -16,11 +16,19 @@ class TimeSpentRequest extends FormRequest
 
     public function rules(): array
     {
-        //date_format:H:i
+     
+        if(request('type')=='add'){
         return [
-            'time_spent'  => 'required|min:5|max:8',
+            'type'        => 'required',
+            'time_spent'  => 'required_if:type,==,add|min:5|max:8',
             'description' => 'required|max:400'
         ];
+        }
+        else{
+            return [
+                'description' => 'required|max:400'
+            ];
+        }
     }
     
     public function messages(): array

@@ -86,6 +86,9 @@
         </nav>
 
         <main class="py-4">
+        <div class="container">
+            <div class="m-auto col-12">{{ Breadcrumbs::render() }}</div>
+         </div>
             @yield('content')
         </main>
     </div>

@@ -2,20 +2,28 @@
 <div class="container mt-5">
 <form id="addTSForm" class="row g-1" @submit="formSubmit" enctype="multipart/form-data">
 <input type="hidden" name="_token" :value="csrf">
-<h2 class="mt-5">Потраченное время</h2>
+
 <div id="errMsgTs" v-show="errMsgVisible" class="alert alert-danger" role="alert">
 </div>
-  <div class="mb-3 mt-5">
+
+<div v-if="type == 'add'">
+<h2 class="mt-5">Потраченное время</h2>
+<input type="hidden" name="_type" value="add">
+ <div class="mb-3 mt-5">
   <label for="exampleFormControlInput1" class="form-label">Затраченное время*</label>
   <input type="time" v-model="form.time_spent" name="time_spent" class="form-control" placeholder="">
+</div>
+</div>
+
+<div v-if="type == 'mark'">
+<input type="hidden" name="_type" value="mark">
 </div>
 <div class="mb-3">
   <label for="exampleFormControlTextarea1" class="form-label">Описание работ</label>
   <textarea name="desription" v-model="form.description" class="form-control" rows="3"></textarea>
 </div>
 
-
-  <div class="col-auto">
+  <div  v-if="type == 'add'" class="col-auto">
     <button type="submit" v-if="mode == 'create'" class="btn btn-primary mb-3">
     Добавить время
     </button>
@@ -23,6 +31,16 @@
     Сохранить
     </button>
   </div>
+  
+    <div  v-if="type == 'mark'" class="col-auto">
+    <button  type="submit" v-if="mode == 'create'" class="btn btn-primary mb-3">
+    Старт
+    </button>
+    <button  type="submit"  v-else   class="btn btn-primary mb-3">
+    Сохранить
+    </button>
+  </div>
+  
   </form>
   </div>
   
@@ -37,9 +55,10 @@ export default {
   data() {
     return {
      form:{
-     time_spent:'',
-     description:''
+     time_spent:null,
+     description:null
      },
+      type:'add',
       file: '',
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),  
       errMsgVisible:false,
@@ -88,8 +107,17 @@ export default {
                 this.file = e.target.files[0];
             },
   loadData(){
-        this.form.time_spent = this.tsData.time_spent;
-        this.form.description = this.tsData.description; 
+             
+             if(this.$props.tsData.mark || this.$props.tsData.type == 'mark'){
+             this.type = 'mark';
+             this.form.time_spent = 0;
+             }
+             else{
+             this.type = 'add';
+             this.form.time_spent = this.tsData.time_spent;
+             }
+
+            this.form.description = this.tsData.description; 
   },    
 			
      close(){
@@ -114,9 +142,9 @@ export default {
               
                 
                 data.append('time_spent', this.form.time_spent);
-                console.log(this.form.time_spent);
                 data.append('description', this.form.description); 
                 data.append('task_id', this.$props.task_id);
+                data.append('type', this.type);
                 
                 let appObj = this ;
                 

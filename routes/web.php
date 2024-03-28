@@ -38,11 +38,15 @@ Route::middleware(['auth'])->group(function () {
         
         Route::controller(ProjectVueController::class)->group(function () {
             Route::get('/vue_projects', 'index');
+            Route::get('/vue_projects_data', 'projects');
             Route::get('/vue_project/{project}','show');
         });
         
         Route::resource('task', TaskController::class);
+        
         Route::resource('time_spent', TimeSpentController::class);
+        Route::post('/time_spent/stop/{id}', [TimeSpentController::class, 'stop']);
+        
         
         Route::get('/images', [ImageController::class, 'index']);
         Route::post('/images/upload', [ImageController::class, 'store']);
