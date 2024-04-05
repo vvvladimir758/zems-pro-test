@@ -15,9 +15,9 @@ if (! function_exists('sec2HrMin')) {
     function sec2HrMin($seconds)
     {
           $hours = intval($seconds / (60*60));
-          $mins  = ($seconds - ($hours*60*60))/60;
+          $mins  = intval(($seconds - ($hours*60*60))/60);
           
-          return $hours > 0  ? $hours.'ч '.$mins.'мин':  $mins.'мин';
+          return $hours > 0  ? $hours.' ч '.$mins.' мин ':  $mins.' мин ';
     }
 }
 

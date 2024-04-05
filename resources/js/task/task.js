@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import { createStore } from 'vuex';
-import TaskListSingle from "../components/TaskListSingle.vue";
+import Task from "../components/Task.vue";
 import AddTask from "../components/AddTask.vue";
 import { VueSidePanel } from 'vue3-side-panel';
 import 'vue3-side-panel/dist/vue3-side-panel.css';
@@ -23,7 +23,7 @@ export const store = createStore({
   }
 })
 
-const taskList = createApp({  
+const taskShow = createApp({  
 	data() {
     return { 
 		isOpened:false,
@@ -55,10 +55,10 @@ const taskList = createApp({
   });
   
 
-taskList.component('task-list', TaskListSingle);
-taskList.component('vue-sidepanel',VueSidePanel);
-taskList.component('AddTask',AddTask);
+taskShow.component('task', Task);
+taskShow.component('vue-sidepanel',VueSidePanel);
+taskShow.component('AddTask',AddTask);
 
 
-taskList.use(store);
-taskList.mount("#taskList");
+taskShow.use(store);
+taskShow.mount("#task");
