@@ -13,7 +13,7 @@
 @section('content')
 <div id="task">
 
-<task :data="{{$data}}" ref="task"></task-list>
+<task :task_id="{{$taskId}}" ref="task"></task>
  
         <vue-sidepanel 
             v-model="isOpened"

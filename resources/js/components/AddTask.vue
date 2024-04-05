@@ -9,11 +9,14 @@
   <label for="exampleFormControlInput1" class="form-label">Название задачи*</label>
   <input type="text" v-model="form.title" name="title" class="form-control" placeholder="Введите название задачи">
 </div>
-
-  <div v-if="this.$props.project_id == undefined" class="mb-3 mt-5">
+<template v-if="mode == 'create'">
+  <div class="mb-3" v-if="this.$props.project_id == undefined">
   <label for="exampleFormControlInput1" class="form-label">Проект</label>
-  <input type="text" v-model="form.title" name="title" class="form-control" placeholder="Введите название задачи">
-</div>
+    <select class="form-select" v-model="form.selectedProject" name="project">
+        <option v-for="project in projects" v-bind:value="project.id">{{project.title}}</option>
+    </select> 
+  </div>
+  </template>
 <div class="mb-3">
   <label for="exampleFormControlTextarea1" class="form-label">Описание задачи*</label>
   <textarea name="desription" v-model="form.description" class="form-control" rows="3"></textarea>
@@ -41,9 +44,11 @@ export default {
    emits: ["modified"], 
   data() {
     return {
+     projects:null,
      form:{
      title:'',
-     description:''
+     description:'',
+     selectedProject:null
      },
       file: '',
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),  
@@ -54,6 +59,7 @@ export default {
   mode:'',
   taskData:{},
   project_id:null,
+  projects:null,
   },
   created() {
 	},
@@ -96,7 +102,7 @@ export default {
   
   },
   loadProjects(){
-  alert('loadiing projects for option');
+  this.projects = this.$props.projects;
   },    
   getImgUrl() {
 			  return'/storage/'+ this.projectData.image.image_path ;
@@ -121,9 +127,18 @@ export default {
                 
                 let data = new FormData();
 
+                console.log(this.form.selectedProject);
+
                 data.append('title', this.form.title);
                 data.append('description', this.form.description); 
+                data.append('project_id_s', this.form.selectedProject); 
+
+                if(this.form.selectedProject != null){
+                data.append('project_id', this.form.selectedProject);
+                }
+                else{
                 data.append('project_id', this.$props.project_id);
+                }
                 
                 let appObj = this ;
                 

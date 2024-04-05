@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\TimeSpent;
 
 class TaskController extends Controller
 {
@@ -23,7 +24,17 @@ class TaskController extends Controller
         ->toJson();
 
         return view('tasks.index')
-        ->with('projects',$projects);
+               ->with('projects',$projects);
+    }
+    
+    public function taskData($id){
+        
+        //dd($id, Task::whereId($id) ->get()->toJson());
+        return Task::whereId($id)
+               ->with('timeSpent')
+               ->first()
+               ->toJson();
+
     }
 
     /**
@@ -39,12 +50,11 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        
         $data = [
             'title'       => $request->get('title'),
             'description' => $request->get('description'),
             'user_id'     => Auth::id(),
-            'project_id'  => $request->get('project_id'),
+            'project_id'  => $request->project_id,
         ];
 
         $task = Task::create($data);
@@ -58,7 +68,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+      
+      return view('tasks.task')
+      ->with('taskId',$task->id);
     }
 
     /**
