@@ -8,7 +8,7 @@
   <div class="col">
     <div class="card h-100">
     
-      <svg v-if="project.image_id == null" class="bd-placeholder-img card-img-top" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <svg v-if="project.image_id == null" class="bd-placeholder-img card-img-top" width="100%" height="450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
       <title>Placeholder</title>
       <rect width="100%" height="100%" fill="#868e96"></rect>
       <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
