@@ -7,6 +7,16 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
     $trail->push('Приветсвие', route('home'));
 });
+
+Breadcrumbs::for('login', function (BreadcrumbTrail $trail) {
+        $trail->parent('home');
+        $trail->push('Авторизация', route('login'));
+});
+
+Breadcrumbs::for('register', function (BreadcrumbTrail $trail) {
+        $trail->parent('home');
+        $trail->push('Регистрация', route('register'));
+});
     
 Breadcrumbs::for('project.index', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
